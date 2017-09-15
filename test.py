@@ -6,12 +6,32 @@ import ctypes
 class LinxDevice():
     def __init__(self):
         self.linxLib = ctypes.cdll.LoadLibrary('/usr/lib/liblinxdevice.so')
+        self.linxLib
+        self.linxLib.LinxOpen()
+
+    def __del__(self):
+        print "Closing linx device"
+        self.linxLib.LinxClose()
         
     def getDeviceName(self):
-        print self.linxLib.LinxGetDeviceName()
+        test = self.linxLib.LinxGetDeviceName()
+        print test
 
     def getDeviceId(self):
-        print self.linxLib.LinxGetDeviceId()
+        print "getting device id"
+        test = self.linxLib.LinxGetDeviceId()
+        print test
+
+    def processCommand(self, myByteArray):
+        print "process command"
+        tempBuff = (ctypes.c_ubyte * 256)()
+        sendBuff = (ctypes.c_ubyte * len(myByteArray))()
+        for index in range(len(myByteArray)):
+            sendBuff[index] = myByteArray[index]
+        test = self.linxLib.LinxProcessCommand(sendBuff, tempBuff)
+        for s in tempBuff:
+            print s
+        print test
 
 class S(BaseHTTPRequestHandler):
     linxDevice = LinxDevice()
@@ -34,9 +54,9 @@ class S(BaseHTTPRequestHandler):
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
         print post_data
         test = bytearray(post_data)
-        for s in test:
-            print s
+        self.linxDevice.processCommand(test)
         self._set_headers()
+        self.send_header('Access-Control-Allow-Origin', '*')
         self.wfile.write("<html><body><h1>POST!</h1></body></html>")
         
 def run(server_class=HTTPServer, handler_class=S, port=4443):
