@@ -1,1 +1,5 @@
 .vscode
+*.crt
+*.csr
+*.key
+*.pem

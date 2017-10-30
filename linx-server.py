@@ -53,7 +53,7 @@ class S(BaseHTTPRequestHandler):
 def run(server_class=HTTPServer, handler_class=S, port=4443):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class) 
-    httpd.socket = ssl.wrap_socket(httpd.socket, keyfile="./key.pem", certfile="./cert.pem", server_side=True)
+    httpd.socket = ssl.wrap_socket(httpd.socket, certfile="./server.pem", server_side=True)
     print 'Starting httpd...'
     httpd.serve_forever()
 
