@@ -1,6 +1,6 @@
 # linx-python-listener
 
-LINX https server listener using python 2.7
+LINX http and https server listener using python 2.7
 
 ## Getting Started
 
@@ -24,6 +24,16 @@ Move to project directory
 ```
 cd linx-python-listener
 ```
+
+### HTTP Server
+
+Run HTTP server 
+
+```
+python http.py
+```
+
+### Setup HTTPS Server
 
 Generate the server key
 
@@ -52,7 +62,7 @@ cat server.crt server.key > server.pem
 Run the server
 
 ```
-python linx-server.py
+python https.py
 ```
 
 ## License
